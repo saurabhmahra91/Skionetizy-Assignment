@@ -36,7 +36,7 @@ def create():
         b1 = Book(name=str(name), author=str(author))
         b1.save()
         context = {
-            "message": "The user was created successfully",
+            "message": "The book was created successfully",
             "user" : b1.to_json() 
         }
         return Response(
@@ -93,7 +93,7 @@ def update(id):
         book.author = request.form["author"]
         book.save()
         return Response(
-            response =dumps({"message":"user updated"}),
+            response =dumps({"message":"book updated"}),
             status=200,
             mimetype="application/json"
         )
@@ -108,7 +108,7 @@ def update(id):
         )
 
 @app.route('/books/<id>', methods=['DELETE'])
-def delete():
+def delete(id):
     try:
         book = Book.objects.get(pk=id)
     except Exception as e:
@@ -122,9 +122,10 @@ def delete():
         )
 
     try:
+        book = Book.objects.get(pk=id)
         book.delete()
         context = {
-            "message": "user has been deleted",
+            "message": "book has been deleted",
         }
 
         return Response(
